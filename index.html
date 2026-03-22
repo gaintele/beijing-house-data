@@ -82,8 +82,9 @@
         }
         .card-stats {
             display: flex;
-            gap: 16px;
+            gap: 12px;
             font-size: 12px;
+            flex-wrap: wrap;
         }
         .card-stats span {
             background: rgba(255,255,255,0.1);
@@ -91,9 +92,24 @@
             border-radius: 12px;
         }
         .card-total {
-            background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(123,44,191,0.2));
+            background: linear-gradient(135deg, rgba(0,212,255,0.15), rgba(123,44,191,0.15));
             --accent1: #00d4ff;
             --accent2: #7b2cbf;
+        }
+        .card-zhongguancun {
+            background: linear-gradient(135deg, rgba(255,107,157,0.15), rgba(255,170,0,0.15));
+            --accent1: #ff6b9d;
+            --accent2: #ffaa00;
+        }
+        .card-shangdi {
+            background: linear-gradient(135deg, rgba(255,87,87,0.15), rgba(255,170,0,0.15));
+            --accent1: #ff5757;
+            --accent2: #ffaa00;
+        }
+        .card-haidian {
+            background: linear-gradient(135deg, rgba(130,87,255,0.15), rgba(0,212,255,0.15));
+            --accent1: #8257ff;
+            --accent2: #00d4ff;
         }
         .footer {
             text-align: center;
@@ -103,6 +119,9 @@
         }
         @media (max-width: 600px) {
             .grid { grid-template-columns: 1fr; }
+            .card { padding: 20px; }
+            .card-stats { gap: 8px; }
+            .card-stats span { font-size: 11px; padding: 3px 8px; }
         }
     </style>
 </head>
@@ -122,6 +141,36 @@
                 <div class="card-stats">
                     <span>502套/日均</span>
                     <span>5.73万/㎡</span>
+                </div>
+            </a>
+            <a href="zhongguancun_house_data.html" class="card card-zhongguancun">
+                <div class="card-icon">🏛️</div>
+                <div class="card-title">中关村学区</div>
+                <div class="card-desc">顶尖学区 · 传统顶流</div>
+                <div class="card-stats">
+                    <span>143套/月</span>
+                    <span>8.8万/㎡</span>
+                    <span>748万/套</span>
+                </div>
+            </a>
+            <a href="shangdi_house_data.html" class="card card-shangdi">
+                <div class="card-icon">🔥</div>
+                <div class="card-title">上地学区</div>
+                <div class="card-desc">阳光招生后崛起 · 最火学区</div>
+                <div class="card-stats">
+                    <span>50套/月</span>
+                    <span>7.5万/㎡</span>
+                    <span>639万/套</span>
+                </div>
+            </a>
+            <a href="haidian_house_data.html" class="card card-haidian">
+                <div class="card-icon">🌟</div>
+                <div class="card-title">海淀学区</div>
+                <div class="card-desc">教育资源集中 · 成交量大</div>
+                <div class="card-stats">
+                    <span>1,500套/月</span>
+                    <span>8.3万/㎡</span>
+                    <span>701万/套</span>
                 </div>
             </a>
         </div>

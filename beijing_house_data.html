@@ -47,32 +47,32 @@
         }
         .key-stats {
             display: flex;
-            gap: 24px;
+            gap: 16px;
             margin-bottom: 24px;
         }
         .key-stat-card {
             flex: 1;
             background: rgba(255,255,255,0.08);
             border-radius: 16px;
-            padding: 28px 20px;
+            padding: 20px 16px;
             text-align: center;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.15);
         }
         .key-stat-value {
-            font-size: 42px;
+            font-size: 36px;
             font-weight: bold;
             background: linear-gradient(90deg, #00d4ff, #7b2cbf);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         .key-stat-unit {
-            font-size: 16px;
+            font-size: 14px;
             color: #888;
             margin-top: 4px;
         }
         .key-stat-label {
-            font-size: 14px;
+            font-size: 13px;
             color: #666;
             margin-top: 8px;
         }
@@ -139,8 +139,11 @@
         }
         .source-title { font-weight: bold; color: #888; margin-bottom: 8px; }
 
-        @media (max-width: 600px) {
-            .key-stats { flex-direction: column; }
+        /* 手机适配：保持并排显示 */
+        @media (max-width: 500px) {
+            .key-stat-card { padding: 16px 12px; }
+            .key-stat-value { font-size: 28px; }
+            .key-stat-label { font-size: 12px; }
             .table-header, .table-row {
                 grid-template-columns: 1fr 1fr 1fr;
             }
