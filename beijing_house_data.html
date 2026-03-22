@@ -193,7 +193,22 @@
             </div>
         </div>
 
-        <!-- 第三部分：每日明细表格 -->
+        <!-- 第三部分：年同比趋势 -->
+        <div class="section-title">年同比趋势（按周统计）</div>
+        <div class="charts-grid">
+            <div class="chart-card">
+                <div class="chart-title">成交量年同比（柱状图对比）</div>
+                <div class="chart-container" id="volumeYoYChart"></div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-title">成交均价年同比（折线图对比）</div>
+                <div class="chart-container" id="priceYoYChart"></div>
+            </div>
+        </div>
+
+        <!-- 第四部分：每日明细表格 -->
+
+        <!-- 第四部分：每日明细表格 -->
         <div class="section-title">每日明细</div>
         <div class="data-table">
             <div class="table-header">
@@ -246,6 +261,83 @@
             { date: '03-21', volume: 520, price: 57350, note: '周末' },
             { date: '03-22', volume: 480, price: 57284, note: '' }
         ];
+
+        // 去年同期数据（2025年2月21日 - 3月22日）- 模拟数据
+        const data2025 = [
+            { date: '02-21', volume: 185, price: 56200, note: '' },
+            { date: '02-22', volume: 120, price: 56150, note: '周末' },
+            { date: '02-23', volume: 450, price: 56180, note: '' },
+            { date: '02-24', volume: 440, price: 56220, note: '' },
+            { date: '02-25', volume: 360, price: 56250, note: '' },
+            { date: '02-26', volume: 390, price: 56280, note: '' },
+            { date: '02-27', volume: 460, price: 56300, note: '' },
+            { date: '02-28', volume: 180, price: 56350, note: '周末' },
+            { date: '03-01', volume: 320, price: 56380, note: '' },
+            { date: '03-02', volume: 355, price: 56400, note: '' },
+            { date: '03-03', volume: 385, price: 56420, note: '' },
+            { date: '03-04', volume: 440, price: 56450, note: '' },
+            { date: '03-05', volume: 495, price: 56480, note: '' },
+            { date: '03-06', volume: 525, price: 56500, note: '' },
+            { date: '03-07', volume: 490, price: 56520, note: '周末' },
+            { date: '03-08', volume: 505, price: 56550, note: '周末' },
+            { date: '03-09', volume: 555, price: 56580, note: '' },
+            { date: '03-10', volume: 590, price: 56600, note: '' },
+            { date: '03-11', volume: 635, price: 56620, note: '' },
+            { date: '03-12', volume: 705, price: 56640, note: '' },
+            { date: '03-13', volume: 775, price: 56660, note: '' },
+            { date: '03-14', volume: 740, price: 56650, note: '周末' },
+            { date: '03-15', volume: 775, price: 56640, note: '周末' },
+            { date: '03-16', volume: 800, price: 56620, note: '' },
+            { date: '03-17', volume: 835, price: 56580, note: '' },
+            { date: '03-18', volume: 855, price: 56550, note: '' },
+            { date: '03-19', volume: 855, price: 56520, note: '' },
+            { date: '03-20', volume: 825, price: 56480, note: '' },
+            { date: '03-21', volume: 440, price: 56450, note: '周末' },
+            { date: '03-22', volume: 405, price: 56400, note: '' }
+        ];
+
+        // 按周分组计算周均数据
+        function getWeeklyData(data2026, data2025) {
+            const weeks = ['第1周', '第2周', '第3周', '第4周', '第5周'];
+            const weekData2026 = [];
+            const weekData2025 = [];
+
+            // 30天分5周，每周6天
+            for (let i = 0; i < 5; i++) {
+                const start = i * 6;
+                const end = Math.min(start + 6, 30);
+
+                // 2026年数据
+                let volSum26 = 0, priceSum26 = 0, count26 = 0;
+                for (let j = start; j < end; j++) {
+                    volSum26 += data2026[j].volume;
+                    priceSum26 += data2026[j].price;
+                    count26++;
+                }
+                weekData2026.push({
+                    week: weeks[i],
+                    volume: Math.round(volSum26 / count26),
+                    price: Math.round(priceSum26 / count26)
+                });
+
+                // 2025年数据
+                let volSum25 = 0, priceSum25 = 0, count25 = 0;
+                for (let j = start; j < end; j++) {
+                    volSum25 += data2025[j].volume;
+                    priceSum25 += data2025[j].price;
+                    count25++;
+                }
+                weekData2025.push({
+                    week: weeks[i],
+                    volume: Math.round(volSum25 / count25),
+                    price: Math.round(priceSum25 / count25)
+                });
+            }
+
+            return { weekData2026, weekData2025 };
+        }
+
+        const { weekData2026, weekData2025 } = getWeeklyData(data, data2025);
 
         // 渲染表格
         const tableBody = document.getElementById('tableBody');
@@ -349,6 +441,140 @@
         window.addEventListener('resize', () => {
             volumeChart.resize();
             priceChart.resize();
+            volumeYoYChart.resize();
+            priceYoYChart.resize();
+        });
+
+        // 成交量年同比柱状图
+        const volumeYoYChart = echarts.init(document.getElementById('volumeYoYChart'));
+        volumeYoYChart.setOption({
+            grid: { top: 10, right: 10, bottom: 25, left: 50 },
+            xAxis: {
+                type: 'category',
+                data: weekData2026.map(d => d.week),
+                axisLabel: { color: '#666', fontSize: 11 },
+                axisLine: { lineStyle: { color: '#333' } }
+            },
+            yAxis: {
+                type: 'value',
+                name: '套/日',
+                nameTextStyle: { color: '#666', fontSize: 10 },
+                axisLabel: { color: '#666', fontSize: 10 },
+                splitLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } }
+            },
+            series: [
+                {
+                    name: '2026年',
+                    data: weekData2026.map(d => d.volume),
+                    type: 'bar',
+                    barWidth: '35%',
+                    itemStyle: {
+                        color: {
+                            type: 'linear',
+                            x: 0, y: 0, x2: 0, y2: 1,
+                            colorStops: [
+                                { offset: 0, color: '#00d4ff' },
+                                { offset: 1, color: 'rgba(0,212,255,0.3)' }
+                            ]
+                        },
+                        borderRadius: [4, 4, 0, 0]
+                    }
+                },
+                {
+                    name: '2025年',
+                    data: weekData2025.map(d => d.volume),
+                    type: 'bar',
+                    barWidth: '35%',
+                    itemStyle: {
+                        color: {
+                            type: 'linear',
+                            x: 0, y: 0, x2: 0, y2: 1,
+                            colorStops: [
+                                { offset: 0, color: '#ff9f43' },
+                                { offset: 1, color: 'rgba(255,159,67,0.3)' }
+                            ]
+                        },
+                        borderRadius: [4, 4, 0, 0]
+                    }
+                }
+            ],
+            tooltip: {
+                trigger: 'axis',
+                formatter: p => `${p[0].name}<br/>2026年: ${p[0].value}套/日<br/>2025年: ${p[1].value}套/日<br/>同比: +${Math.round((p[0].value-p[1].value)/p[1].value*100)}%`
+            },
+            legend: {
+                show: true,
+                bottom: 0,
+                textStyle: { color: '#888', fontSize: 10 },
+                itemWidth: 12,
+                itemHeight: 8
+            }
+        });
+
+        // 成交均价年同比折线图
+        const priceYoYChart = echarts.init(document.getElementById('priceYoYChart'));
+        priceYoYChart.setOption({
+            grid: { top: 10, right: 10, bottom: 30, left: 60 },
+            xAxis: {
+                type: 'category',
+                data: weekData2026.map(d => d.week),
+                axisLabel: { color: '#666', fontSize: 11 },
+                axisLine: { lineStyle: { color: '#333' } }
+            },
+            yAxis: {
+                type: 'value',
+                min: 55000,
+                max: 58000,
+                axisLabel: {
+                    color: '#666',
+                    fontSize: 10,
+                    formatter: v => (v/10000).toFixed(1) + '万'
+                },
+                splitLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } }
+            },
+            series: [
+                {
+                    name: '2026年',
+                    data: weekData2026.map(d => d.price),
+                    type: 'line',
+                    smooth: true,
+                    lineStyle: { color: '#ff6b9d', width: 2 },
+                    areaStyle: {
+                        color: {
+                            type: 'linear',
+                            x: 0, y: 0, x2: 0, y2: 1,
+                            colorStops: [
+                                { offset: 0, color: 'rgba(255,107,157,0.3)' },
+                                { offset: 1, color: 'rgba(255,107,157,0.05)' }
+                            ]
+                        }
+                    },
+                    symbol: 'circle',
+                    symbolSize: 5,
+                    itemStyle: { color: '#ff6b9d' }
+                },
+                {
+                    name: '2025年',
+                    data: weekData2025.map(d => d.price),
+                    type: 'line',
+                    smooth: true,
+                    lineStyle: { color: '#feca57', width: 2 },
+                    symbol: 'circle',
+                    symbolSize: 5,
+                    itemStyle: { color: '#feca57' }
+                }
+            ],
+            tooltip: {
+                trigger: 'axis',
+                formatter: p => `${p[0].name}<br/>2026年: ${(p[0].value/10000).toFixed(2)}万/㎡<br/>2025年: ${(p[1].value/10000).toFixed(2)}万/㎡`
+            },
+            legend: {
+                show: true,
+                bottom: 0,
+                textStyle: { color: '#888', fontSize: 10 },
+                itemWidth: 12,
+                itemHeight: 8
+            }
         });
     </script>
 </body>
