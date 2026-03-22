@@ -1,0 +1,23 @@
+name: 每日更新二手房数据
+
+on:
+  schedule:
+    - cron: '0 1 * * *'
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - run: pip install requests beautifulsoup4
+      - run: python scripts/fetch_data.py
+      - run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add beijing_house_data.html
+          git diff --staged --quiet || git commit -m "自动更新: $(date +'%Y年%m月%d日')"
+          git push
