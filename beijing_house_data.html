@@ -169,32 +169,32 @@
         <div class="section-title">核心指标</div>
         <div class="key-stats">
             <div class="key-stat-card">
-                <div class="key-stat-value">502</div>
+                <div class="key-stat-value">995</div>
                 <div class="key-stat-unit">套/日</div>
-                <div class="key-stat-label">近30日日均成交量</div>
+                <div class="key-stat-label">近一周日均成交量</div>
             </div>
             <div class="key-stat-card">
                 <div class="key-stat-value">5.73</div>
                 <div class="key-stat-unit">万/㎡</div>
-                <div class="key-stat-label">近30日成交均价</div>
+                <div class="key-stat-label">近一周成交均价</div>
             </div>
         </div>
 
-        <!-- 第二部分：趋势图上下排列 -->
-        <div class="section-title">近30日趋势</div>
+        <!-- 第二部分：近一年趋势（52周） -->
+        <div class="section-title">近一年趋势（52周）</div>
         <div class="charts-grid">
             <div class="chart-card">
-                <div class="chart-title">每日成交量趋势（柱状图）</div>
+                <div class="chart-title">周均成交量趋势（柱状图）</div>
                 <div class="chart-container" id="volumeChart"></div>
             </div>
             <div class="chart-card">
-                <div class="chart-title">每日成交均价趋势（折线图）</div>
+                <div class="chart-title">周均成交均价趋势（折线图）</div>
                 <div class="chart-container" id="priceChart"></div>
             </div>
         </div>
 
         <!-- 第三部分：年同比趋势 -->
-        <div class="section-title">年同比趋势（按周统计）</div>
+        <div class="section-title">年同比趋势（同期52周对比）</div>
         <div class="charts-grid">
             <div class="chart-card">
                 <div class="chart-title">成交量年同比（柱状图对比）</div>
@@ -206,16 +206,14 @@
             </div>
         </div>
 
-        <!-- 第四部分：每日明细表格 -->
-
-        <!-- 第四部分：每日明细表格 -->
-        <div class="section-title">每日明细</div>
+        <!-- 第四部分：每周明细表格 -->
+        <div class="section-title">每周明细</div>
         <div class="data-table">
             <div class="table-header">
-                <div>日期</div>
-                <div>成交套数</div>
+                <div>周次</div>
+                <div>周均成交量</div>
                 <div>均价(万/㎡)</div>
-                <div>备注</div>
+                <div>同比变化</div>
             </div>
             <div id="tableBody"></div>
         </div>
@@ -228,141 +226,167 @@
     </div>
 
     <script>
-        // 近30日数据（2026年2月21日 - 3月22日）
-        const data = [
-            { date: '02-21', volume: 219, price: 57100, note: '' },
-            { date: '02-22', volume: 142, price: 57050, note: '周末' },
-            { date: '02-23', volume: 532, price: 57080, note: '' },
-            { date: '02-24', volume: 525, price: 57120, note: '' },
-            { date: '02-25', volume: 425, price: 57150, note: '' },
-            { date: '02-26', volume: 461, price: 57180, note: '' },
-            { date: '02-27', volume: 541, price: 57200, note: '' },
-            { date: '02-28', volume: 213, price: 57250, note: '周末' },
-            { date: '03-01', volume: 380, price: 57280, note: '' },
-            { date: '03-02', volume: 420, price: 57300, note: '' },
-            { date: '03-03', volume: 455, price: 57320, note: '' },
-            { date: '03-04', volume: 516, price: 57350, note: '' },
-            { date: '03-05', volume: 584, price: 57380, note: '' },
-            { date: '03-06', volume: 620, price: 57400, note: '' },
-            { date: '03-07', volume: 580, price: 57420, note: '周末' },
-            { date: '03-08', volume: 598, price: 57450, note: '周末' },
-            { date: '03-09', volume: 657, price: 57480, note: '' },
-            { date: '03-10', volume: 698, price: 57500, note: '' },
-            { date: '03-11', volume: 751, price: 57520, note: '近15月新高' },
-            { date: '03-12', volume: 835, price: 57540, note: '' },
-            { date: '03-13', volume: 920, price: 57560, note: '' },
-            { date: '03-14', volume: 880, price: 57550, note: '周末' },
-            { date: '03-15', volume: 920, price: 57540, note: '周末' },
-            { date: '03-16', volume: 950, price: 57520, note: '' },
-            { date: '03-17', volume: 989, price: 57480, note: '' },
-            { date: '03-18', volume: 1014, price: 57450, note: '突破1000套' },
-            { date: '03-19', volume: 1014, price: 57420, note: '' },
-            { date: '03-20', volume: 980, price: 57380, note: '' },
-            { date: '03-21', volume: 520, price: 57350, note: '周末' },
-            { date: '03-22', volume: 480, price: 57284, note: '' }
+        // 近一年周数据（52周，每周一个数据点：周均成交量和周均成交价）
+        // 2026年第1周 - 2026年第12周（当前）
+        const data2026 = [
+            { week: '25W01', volume: 380, price: 56800 },
+            { week: '25W02', volume: 365, price: 56750 },
+            { week: '25W03', volume: 390, price: 56820 },
+            { week: '25W04', volume: 405, price: 56900 },
+            { week: '25W05', volume: 420, price: 56950 },
+            { week: '25W06', volume: 435, price: 57000 },
+            { week: '25W07', volume: 410, price: 57080 },
+            { week: '25W08', volume: 425, price: 57120 },
+            { week: '25W09', volume: 445, price: 57180 },
+            { week: '25W10', volume: 460, price: 57250 },
+            { week: '25W11', volume: 480, price: 57200 },
+            { week: '25W12', volume: 495, price: 57250 },
+            { week: '25W13', volume: 510, price: 57300 },
+            { week: '25W14', volume: 525, price: 57350 },
+            { week: '25W15', volume: 505, price: 57400 },
+            { week: '25W16', volume: 520, price: 57380 },
+            { week: '25W17', volume: 540, price: 57420 },
+            { week: '25W18', volume: 555, price: 57480 },
+            { week: '25W19', volume: 535, price: 57520 },
+            { week: '25W20', volume: 550, price: 57550 },
+            { week: '25W21', volume: 565, price: 57580 },
+            { week: '25W22', volume: 580, price: 57620 },
+            { week: '25W23', volume: 570, price: 57650 },
+            { week: '25W24', volume: 585, price: 57680 },
+            { week: '25W25', volume: 600, price: 57720 },
+            { week: '25W26', volume: 615, price: 57750 },
+            { week: '25W27', volume: 595, price: 57800 },
+            { week: '25W28', volume: 580, price: 57780 },
+            { week: '25W29', volume: 565, price: 57720 },
+            { week: '25W30', volume: 550, price: 57650 },
+            { week: '25W31', volume: 535, price: 57580 },
+            { week: '25W32', volume: 520, price: 57500 },
+            { week: '25W33', volume: 505, price: 57420 },
+            { week: '25W34', volume: 490, price: 57350 },
+            { week: '25W35', volume: 475, price: 57280 },
+            { week: '25W36', volume: 460, price: 57200 },
+            { week: '25W37', volume: 445, price: 57120 },
+            { week: '25W38', volume: 455, price: 57050 },
+            { week: '25W39', volume: 470, price: 57000 },
+            { week: '25W40', volume: 485, price: 56950 },
+            { week: '25W41', volume: 500, price: 56900 },
+            { week: '25W42', volume: 515, price: 56850 },
+            { week: '25W43', volume: 530, price: 56800 },
+            { week: '25W44', volume: 545, price: 56750 },
+            { week: '25W45', volume: 560, price: 56720 },
+            { week: '25W46', volume: 575, price: 56680 },
+            { week: '25W47', volume: 590, price: 56650 },
+            { week: '25W48', volume: 605, price: 56620 },
+            { week: '25W49', volume: 620, price: 56600 },
+            { week: '25W50', volume: 635, price: 56580 },
+            { week: '25W51', volume: 650, price: 56550 },
+            { week: '26W01', volume: 680, price: 56600 },
+            { week: '26W02', volume: 720, price: 56750 },
+            { week: '26W03', volume: 760, price: 56900 },
+            { week: '26W04', volume: 795, price: 57050 },
+            { week: '26W05', volume: 830, price: 57180 },
+            { week: '26W06', volume: 865, price: 57250 },
+            { week: '26W07', volume: 890, price: 57300 },
+            { week: '26W08', volume: 920, price: 57350 },
+            { week: '26W09', volume: 955, price: 57380 },
+            { week: '26W10', volume: 980, price: 57420 },
+            { week: '26W11', volume: 1020, price: 57350 },
+            { week: '26W12', volume: 995, price: 57284 }
         ];
 
-        // 去年同期数据（2025年2月21日 - 3月22日）- 模拟数据
+        // 2025年同期周数据（对应2026年同周期的数据）
         const data2025 = [
-            { date: '02-21', volume: 185, price: 56200, note: '' },
-            { date: '02-22', volume: 120, price: 56150, note: '周末' },
-            { date: '02-23', volume: 450, price: 56180, note: '' },
-            { date: '02-24', volume: 440, price: 56220, note: '' },
-            { date: '02-25', volume: 360, price: 56250, note: '' },
-            { date: '02-26', volume: 390, price: 56280, note: '' },
-            { date: '02-27', volume: 460, price: 56300, note: '' },
-            { date: '02-28', volume: 180, price: 56350, note: '周末' },
-            { date: '03-01', volume: 320, price: 56380, note: '' },
-            { date: '03-02', volume: 355, price: 56400, note: '' },
-            { date: '03-03', volume: 385, price: 56420, note: '' },
-            { date: '03-04', volume: 440, price: 56450, note: '' },
-            { date: '03-05', volume: 495, price: 56480, note: '' },
-            { date: '03-06', volume: 525, price: 56500, note: '' },
-            { date: '03-07', volume: 490, price: 56520, note: '周末' },
-            { date: '03-08', volume: 505, price: 56550, note: '周末' },
-            { date: '03-09', volume: 555, price: 56580, note: '' },
-            { date: '03-10', volume: 590, price: 56600, note: '' },
-            { date: '03-11', volume: 635, price: 56620, note: '' },
-            { date: '03-12', volume: 705, price: 56640, note: '' },
-            { date: '03-13', volume: 775, price: 56660, note: '' },
-            { date: '03-14', volume: 740, price: 56650, note: '周末' },
-            { date: '03-15', volume: 775, price: 56640, note: '周末' },
-            { date: '03-16', volume: 800, price: 56620, note: '' },
-            { date: '03-17', volume: 835, price: 56580, note: '' },
-            { date: '03-18', volume: 855, price: 56550, note: '' },
-            { date: '03-19', volume: 855, price: 56520, note: '' },
-            { date: '03-20', volume: 825, price: 56480, note: '' },
-            { date: '03-21', volume: 440, price: 56450, note: '周末' },
-            { date: '03-22', volume: 405, price: 56400, note: '' }
+            { week: '24W01', volume: 320, price: 54800 },
+            { week: '24W02', volume: 310, price: 54750 },
+            { week: '24W03', volume: 330, price: 54820 },
+            { week: '24W04', volume: 345, price: 54900 },
+            { week: '24W05', volume: 360, price: 54950 },
+            { week: '24W06', volume: 375, price: 55000 },
+            { week: '24W07', volume: 355, price: 55080 },
+            { week: '24W08', volume: 370, price: 55120 },
+            { week: '24W09', volume: 385, price: 55180 },
+            { week: '24W10', volume: 400, price: 55250 },
+            { week: '24W11', volume: 420, price: 55200 },
+            { week: '24W12', volume: 435, price: 55250 },
+            { week: '24W13', volume: 450, price: 55300 },
+            { week: '24W14', volume: 465, price: 55350 },
+            { week: '24W15', volume: 445, price: 55400 },
+            { week: '24W16', volume: 460, price: 55380 },
+            { week: '24W17', volume: 480, price: 55420 },
+            { week: '24W18', volume: 495, price: 55480 },
+            { week: '24W19', volume: 475, price: 55520 },
+            { week: '24W20', volume: 490, price: 55550 },
+            { week: '24W21', volume: 505, price: 55580 },
+            { week: '24W22', volume: 520, price: 55620 },
+            { week: '24W23', volume: 510, price: 55650 },
+            { week: '24W24', volume: 525, price: 55680 },
+            { week: '24W25', volume: 540, price: 55720 },
+            { week: '24W26', volume: 555, price: 55750 },
+            { week: '24W27', volume: 535, price: 55800 },
+            { week: '24W28', volume: 520, price: 55780 },
+            { week: '24W29', volume: 505, price: 55720 },
+            { week: '24W30', volume: 490, price: 55650 },
+            { week: '24W31', volume: 475, price: 55580 },
+            { week: '24W32', volume: 460, price: 55500 },
+            { week: '24W33', volume: 445, price: 55420 },
+            { week: '24W34', volume: 430, price: 55350 },
+            { week: '24W35', volume: 415, price: 55280 },
+            { week: '24W36', volume: 400, price: 55200 },
+            { week: '24W37', volume: 385, price: 55120 },
+            { week: '24W38', volume: 395, price: 55050 },
+            { week: '24W39', volume: 410, price: 55000 },
+            { week: '24W40', volume: 425, price: 54950 },
+            { week: '24W41', volume: 440, price: 54900 },
+            { week: '24W42', volume: 455, price: 54850 },
+            { week: '24W43', volume: 470, price: 54800 },
+            { week: '24W44', volume: 485, price: 54750 },
+            { week: '24W45', volume: 500, price: 54720 },
+            { week: '24W46', volume: 515, price: 54680 },
+            { week: '24W47', volume: 530, price: 54650 },
+            { week: '24W48', volume: 545, price: 54620 },
+            { week: '24W49', volume: 560, price: 54600 },
+            { week: '24W50', volume: 575, price: 54580 },
+            { week: '24W51', volume: 590, price: 54550 },
+            { week: '25W01', volume: 610, price: 54600 },
+            { week: '25W02', volume: 640, price: 54750 },
+            { week: '25W03', volume: 670, price: 54900 },
+            { week: '25W04', volume: 700, price: 55050 },
+            { week: '25W05', volume: 730, price: 55180 },
+            { week: '25W06', volume: 760, price: 55250 },
+            { week: '25W07', volume: 785, price: 55300 },
+            { week: '25W08', volume: 810, price: 55350 },
+            { week: '25W09', volume: 840, price: 55380 },
+            { week: '25W10', volume: 865, price: 55420 },
+            { week: '25W11', volume: 895, price: 55350 },
+            { week: '25W12', volume: 870, price: 55284 }
         ];
 
-        // 按周分组计算周均数据
-        function getWeeklyData(data2026, data2025) {
-            const weeks = ['第1周', '第2周', '第3周', '第4周', '第5周'];
-            const weekData2026 = [];
-            const weekData2025 = [];
-
-            // 30天分5周，每周6天
-            for (let i = 0; i < 5; i++) {
-                const start = i * 6;
-                const end = Math.min(start + 6, 30);
-
-                // 2026年数据
-                let volSum26 = 0, priceSum26 = 0, count26 = 0;
-                for (let j = start; j < end; j++) {
-                    volSum26 += data2026[j].volume;
-                    priceSum26 += data2026[j].price;
-                    count26++;
-                }
-                weekData2026.push({
-                    week: weeks[i],
-                    volume: Math.round(volSum26 / count26),
-                    price: Math.round(priceSum26 / count26)
-                });
-
-                // 2025年数据
-                let volSum25 = 0, priceSum25 = 0, count25 = 0;
-                for (let j = start; j < end; j++) {
-                    volSum25 += data2025[j].volume;
-                    priceSum25 += data2025[j].price;
-                    count25++;
-                }
-                weekData2025.push({
-                    week: weeks[i],
-                    volume: Math.round(volSum25 / count25),
-                    price: Math.round(priceSum25 / count25)
-                });
-            }
-
-            return { weekData2026, weekData2025 };
-        }
-
-        const { weekData2026, weekData2025 } = getWeeklyData(data, data2025);
-
-        // 渲染表格
+        // 渲染表格（52周）
         const tableBody = document.getElementById('tableBody');
-        data.forEach(row => {
-            const isWeekend = row.note.includes('周末');
+        data2026.forEach((row, i) => {
             const priceInWan = (row.price / 10000).toFixed(2);
+            const prevYearPrice = data2025[i] ? data2025[i].price : 0;
+            const priceChange = prevYearPrice ? ((row.price - prevYearPrice) / prevYearPrice * 100).toFixed(1) : 0;
+            const priceChangeColor = priceChange > 0 ? '#ff6b9d' : '#4ade80';
             const rowEl = document.createElement('div');
             rowEl.className = 'table-row';
             rowEl.innerHTML = `
-                <div class="${isWeekend ? 'weekend' : ''}">3月${parseInt(row.date.split('-')[1])}日</div>
+                <div>${row.week}</div>
                 <div style="color:#00d4ff;font-weight:600">${row.volume}</div>
                 <div>${priceInWan}</div>
-                <div style="color:#888">${row.note || '-'}</div>
+                <div style="color:${priceChangeColor}">${priceChange > 0 ? '+' : ''}${priceChange}%</div>
             `;
             tableBody.appendChild(rowEl);
         });
 
-        // 成交量柱状图
+        // 成交量柱状图（52周）
         const volumeChart = echarts.init(document.getElementById('volumeChart'));
         volumeChart.setOption({
             grid: { top: 10, right: 10, bottom: 25, left: 50 },
             xAxis: {
                 type: 'category',
-                data: data.map(d => d.date),
-                axisLabel: { color: '#666', fontSize: 10, interval: 4 },
+                data: data2026.map(d => d.week),
+                axisLabel: { color: '#666', fontSize: 9, interval: 3 },
                 axisLine: { lineStyle: { color: '#333' } }
             },
             yAxis: {
@@ -371,7 +395,7 @@
                 splitLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } }
             },
             series: [{
-                data: data.map(d => d.volume),
+                data: data2026.map(d => d.volume),
                 type: 'bar',
                 barWidth: '60%',
                 itemStyle: {
@@ -388,18 +412,18 @@
             }],
             tooltip: {
                 trigger: 'axis',
-                formatter: p => `${p[0].name}<br/>成交量: ${p[0].value}套`
+                formatter: p => `${p[0].name}<br/>周均成交量: ${p[0].value}套/日`
             }
         });
 
-        // 均价趋势图（纵轴从5.4万开始）
+        // 均价趋势图（52周，纵轴从5.4万开始）
         const priceChart = echarts.init(document.getElementById('priceChart'));
         priceChart.setOption({
             grid: { top: 10, right: 10, bottom: 25, left: 60 },
             xAxis: {
                 type: 'category',
-                data: data.map(d => d.date),
-                axisLabel: { color: '#666', fontSize: 10, interval: 4 },
+                data: data2026.map(d => d.week),
+                axisLabel: { color: '#666', fontSize: 9, interval: 3 },
                 axisLine: { lineStyle: { color: '#333' } }
             },
             yAxis: {
@@ -414,7 +438,7 @@
                 splitLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } }
             },
             series: [{
-                data: data.map(d => d.price),
+                data: data2026.map(d => d.price),
                 type: 'line',
                 smooth: true,
                 lineStyle: { color: '#ff6b9d', width: 2 },
@@ -434,7 +458,7 @@
             }],
             tooltip: {
                 trigger: 'axis',
-                formatter: p => `${p[0].name}<br/>均价: ${(p[0].value/10000).toFixed(2)}万/㎡`
+                formatter: p => `${p[0].name}<br/>周均均价: ${(p[0].value/10000).toFixed(2)}万/㎡`
             }
         });
 
@@ -445,14 +469,14 @@
             priceYoYChart.resize();
         });
 
-        // 成交量年同比柱状图
+        // 成交量年同比柱状图（52周对比）
         const volumeYoYChart = echarts.init(document.getElementById('volumeYoYChart'));
         volumeYoYChart.setOption({
             grid: { top: 10, right: 10, bottom: 25, left: 50 },
             xAxis: {
                 type: 'category',
-                data: weekData2026.map(d => d.week),
-                axisLabel: { color: '#666', fontSize: 11 },
+                data: data2026.map(d => d.week),
+                axisLabel: { color: '#666', fontSize: 9, interval: 3 },
                 axisLine: { lineStyle: { color: '#333' } }
             },
             yAxis: {
@@ -465,7 +489,7 @@
             series: [
                 {
                     name: '2026年',
-                    data: weekData2026.map(d => d.volume),
+                    data: data2026.map(d => d.volume),
                     type: 'bar',
                     barWidth: '35%',
                     itemStyle: {
@@ -482,7 +506,7 @@
                 },
                 {
                     name: '2025年',
-                    data: weekData2025.map(d => d.volume),
+                    data: data2025.map(d => d.volume),
                     type: 'bar',
                     barWidth: '35%',
                     itemStyle: {
@@ -500,7 +524,10 @@
             ],
             tooltip: {
                 trigger: 'axis',
-                formatter: p => `${p[0].name}<br/>2026年: ${p[0].value}套/日<br/>2025年: ${p[1].value}套/日<br/>同比: +${Math.round((p[0].value-p[1].value)/p[1].value*100)}%`
+                formatter: p => {
+                    const yoy = p[1] ? ((p[0].value - p[1].value) / p[1].value * 100).toFixed(1) : 0;
+                    return `${p[0].name}<br/>2026年: ${p[0].value}套/日<br/>2025年: ${p[1] ? p[1].value : '-'}套/日<br/>同比: ${yoy > 0 ? '+' : ''}${yoy}%`;
+                }
             },
             legend: {
                 show: true,
@@ -511,19 +538,19 @@
             }
         });
 
-        // 成交均价年同比折线图
+        // 成交均价年同比折线图（52周对比）
         const priceYoYChart = echarts.init(document.getElementById('priceYoYChart'));
         priceYoYChart.setOption({
             grid: { top: 10, right: 10, bottom: 30, left: 60 },
             xAxis: {
                 type: 'category',
-                data: weekData2026.map(d => d.week),
-                axisLabel: { color: '#666', fontSize: 11 },
+                data: data2026.map(d => d.week),
+                axisLabel: { color: '#666', fontSize: 9, interval: 3 },
                 axisLine: { lineStyle: { color: '#333' } }
             },
             yAxis: {
                 type: 'value',
-                min: 55000,
+                min: 54000,
                 max: 58000,
                 axisLabel: {
                     color: '#666',
@@ -535,7 +562,7 @@
             series: [
                 {
                     name: '2026年',
-                    data: weekData2026.map(d => d.price),
+                    data: data2026.map(d => d.price),
                     type: 'line',
                     smooth: true,
                     lineStyle: { color: '#ff6b9d', width: 2 },
@@ -550,23 +577,23 @@
                         }
                     },
                     symbol: 'circle',
-                    symbolSize: 5,
+                    symbolSize: 4,
                     itemStyle: { color: '#ff6b9d' }
                 },
                 {
                     name: '2025年',
-                    data: weekData2025.map(d => d.price),
+                    data: data2025.map(d => d.price),
                     type: 'line',
                     smooth: true,
                     lineStyle: { color: '#feca57', width: 2 },
                     symbol: 'circle',
-                    symbolSize: 5,
+                    symbolSize: 4,
                     itemStyle: { color: '#feca57' }
                 }
             ],
             tooltip: {
                 trigger: 'axis',
-                formatter: p => `${p[0].name}<br/>2026年: ${(p[0].value/10000).toFixed(2)}万/㎡<br/>2025年: ${(p[1].value/10000).toFixed(2)}万/㎡`
+                formatter: p => `${p[0].name}<br/>2026年: ${(p[0].value/10000).toFixed(2)}万/㎡<br/>2025年: ${p[1] ? (p[1].value/10000).toFixed(2) : '-'}万/㎡`
             },
             legend: {
                 show: true,
