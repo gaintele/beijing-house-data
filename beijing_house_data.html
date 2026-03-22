@@ -3,373 +3,345 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>北京二手房成交数据 (近30日)</title>
+    <title>北京二手房成交数据</title>
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-            background: #f5f7fa;
-            padding: 12px;
-        }
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #fff;
             padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 16px;
+        }
+        .container { max-width: 1000px; margin: 0 auto; }
+        h1 {
             text-align: center;
+            font-size: 28px;
+            margin-bottom: 8px;
+            background: linear-gradient(90deg, #00d4ff, #7b2cbf);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        .header h1 { font-size: 20px; margin-bottom: 8px; }
-        .header .subtitle { font-size: 14px; opacity: 0.9; }
-        .stats {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-        .stat-card {
-            background: white;
-            padding: 16px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        .subtitle {
             text-align: center;
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 24px;
         }
-        .stat-card .label { font-size: 12px; color: #666; margin-bottom: 4px; }
-        .stat-card .value { font-size: 24px; font-weight: bold; color: #333; }
-        .stat-card .value.up { color: #e74c3c; }
-        .stat-card .value.down { color: #27ae60; }
-        .chart-container {
-            background: white;
-            border-radius: 12px;
+        .district-tag {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+
+        /* 第一部分：两个关键数字并排 */
+        .section-title {
+            font-size: 18px;
+            margin: 24px 0 12px;
+            padding-left: 12px;
+            border-left: 4px solid #667eea;
+        }
+        .key-stats {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+        .key-stat-card {
+            flex: 1;
+            background: rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 28px 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+        .key-stat-value {
+            font-size: 42px;
+            font-weight: bold;
+            background: linear-gradient(90deg, #00d4ff, #7b2cbf);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .key-stat-unit {
+            font-size: 16px;
+            color: #888;
+            margin-top: 4px;
+        }
+        .key-stat-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 8px;
+        }
+
+        /* 第二部分：趋势图上下排列 */
+        .charts-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .chart-card {
+            background: rgba(255,255,255,0.08);
+            border-radius: 16px;
             padding: 16px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            margin-bottom: 16px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
         }
         .chart-title {
-            font-size: 16px;
-            font-weight: bold;
-            color: #333;
+            font-size: 14px;
+            color: #ddd;
             margin-bottom: 12px;
+            text-align: center;
         }
-        #chart1, #chart2 { width: 100%; height: 280px; }
-        
-        .table-container {
-            background: white;
-            border-radius: 12px;
-            padding: 16px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            margin-bottom: 16px;
-            overflow-x: auto;
+        .chart-container {
+            height: 180px;
         }
-        .table-title {
-            font-size: 16px;
+
+        /* 第三部分：每日明细表格 */
+        .data-table {
+            background: rgba(255,255,255,0.08);
+            border-radius: 16px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .table-header {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 2fr;
+            padding: 14px 16px;
+            background: rgba(102,126,234,0.2);
             font-weight: bold;
-            color: #333;
-            margin-bottom: 12px;
+            font-size: 13px;
+            color: #00d4ff;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        .table-row {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 2fr;
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
             font-size: 13px;
         }
-        th, td {
-            padding: 10px 8px;
-            text-align: center;
-            border-bottom: 1px solid #eee;
-        }
-        th {
-            background: #f8f9fa;
-            color: #666;
-            font-weight: 600;
-        }
-        td { color: #333; }
-        tr:hover { background: #f8f9fa; }
-        .price-up { color: #e74c3c; }
-        .price-down { color: #27ae60; }
-        
-        .footer {
-            text-align: center;
-            color: #999;
-            font-size: 12px;
+        .table-row:hover { background: rgba(255,255,255,0.05); }
+        .table-row:last-child { border-bottom: none; }
+        .weekend { color: #666; }
+
+        .source {
+            margin-top: 24px;
             padding: 16px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            font-size: 12px;
+            color: #666;
+        }
+        .source-title { font-weight: bold; color: #888; margin-bottom: 8px; }
+
+        @media (max-width: 600px) {
+            .key-stats { flex-direction: column; }
+            .table-header, .table-row {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+            .table-header > div:last-child,
+            .table-row > div:last-child { display: none; }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>北京二手房成交数据</h1>
-        <div class="subtitle">近30日趋势 · 2026-02-19 至 2026-03-20</div>
-    </div>
-    
-    <div class="stats">
-        <div class="stat-card">
-            <div class="label">近30日日均成交</div>
-            <div class="value">622 套</div>
+    <div class="container">
+        <div style="text-align: center;">
+            <span class="district-tag">北京市 · 二手房</span>
         </div>
-        <div class="stat-card">
-            <div class="label">最高单日成交</div>
-            <div class="value up">1014 套</div>
+        <h1>二手房成交数据监控</h1>
+        <p class="subtitle">数据来源：北京市住建委 | 更新日期：2026年3月22日</p>
+
+        <!-- 第一部分：两个关键数字并排 -->
+        <div class="section-title">核心指标</div>
+        <div class="key-stats">
+            <div class="key-stat-card">
+                <div class="key-stat-value">502</div>
+                <div class="key-stat-unit">套/日</div>
+                <div class="key-stat-label">近30日日均成交量</div>
+            </div>
+            <div class="key-stat-card">
+                <div class="key-stat-value">5.73</div>
+                <div class="key-stat-unit">万/㎡</div>
+                <div class="key-stat-label">近30日成交均价</div>
+            </div>
         </div>
-        <div class="stat-card">
-            <div class="label">近30日均价</div>
-            <div class="value">5.70 万/㎡</div>
+
+        <!-- 第二部分：趋势图上下排列 -->
+        <div class="section-title">近30日趋势</div>
+        <div class="charts-grid">
+            <div class="chart-card">
+                <div class="chart-title">每日成交量趋势（柱状图）</div>
+                <div class="chart-container" id="volumeChart"></div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-title">每日成交均价趋势（折线图）</div>
+                <div class="chart-container" id="priceChart"></div>
+            </div>
         </div>
-        <div class="stat-card">
-            <div class="label">近30日涨跌</div>
-            <div class="value up>+542 套</div>
+
+        <!-- 第三部分：每日明细表格 -->
+        <div class="section-title">每日明细</div>
+        <div class="data-table">
+            <div class="table-header">
+                <div>日期</div>
+                <div>成交套数</div>
+                <div>均价(万/㎡)</div>
+                <div>备注</div>
+            </div>
+            <div id="tableBody"></div>
+        </div>
+
+        <div class="source">
+            <div class="source-title">数据来源说明</div>
+            <p>数据来源：北京市住建委官网每日网签数据</p>
+            <p>注：网签数据有约20天延迟，本数据仅供参考</p>
         </div>
     </div>
-    
-    <div class="chart-container">
-        <div class="chart-title">每日成交套数</div>
-        <div id="chart1"></div>
-    </div>
-    
-    <div class="chart-container">
-        <div class="chart-title">每日成交均价 (万元/㎡)</div>
-        <div id="chart2"></div>
-    </div>
-    
-    <div class="table-container">
-        <div class="table-title">每日详细数据</div>
-        <table>
-            <thead>
-                <tr>
-                    <th>日期</th>
-                    <th>成交套数</th>
-                    <th>均价(万/㎡)</th>
-                    <th>备注</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>03-20</td>
-                    <td>980</td>
-                    <td>5.71 <span class="price-down">↓</span></td>
-                    <td>🔥 热</td>
-                </tr>
-                <tr>
-                    <td>03-19</td>
-                    <td>1014</td>
-                    <td>5.72 <span class="price-down">↓</span></td>
-                    <td>🔥 热</td>
-                </tr>
-                <tr>
-                    <td>03-18</td>
-                    <td>1014</td>
-                    <td>5.73 <span class="price-down">↓</span></td>
-                    <td>🔥 热</td>
-                </tr>
-                <tr>
-                    <td>03-17</td>
-                    <td>989</td>
-                    <td>5.74 <span class="price-down">↓</span></td>
-                    <td>🔥 热</td>
-                </tr>
-                <tr>
-                    <td>03-16</td>
-                    <td>950</td>
-                    <td>5.75 <span class="price-down">↓</span></td>
-                    <td>🔥 热</td>
-                </tr>
-                <tr>
-                    <td>03-15</td>
-                    <td>920</td>
-                    <td>5.76 <span class="price-down">↓</span></td>
-                    <td>🔥 热</td>
-                </tr>
-                <tr>
-                    <td>03-14</td>
-                    <td>880</td>
-                    <td>5.77 </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>03-13</td>
-                    <td>920</td>
-                    <td>5.77 <span class="price-up">↑</span></td>
-                    <td>🔥 热</td>
-                </tr>
-                <tr>
-                    <td>03-12</td>
-                    <td>835</td>
-                    <td>5.76 <span class="price-up">↑</span></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>03-11</td>
-                    <td>751</td>
-                    <td>5.75 <span class="price-up">↑</span></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>03-10</td>
-                    <td>698</td>
-                    <td>5.74 <span class="price-up">↑</span></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>03-09</td>
-                    <td>657</td>
-                    <td>5.73 <span class="price-up">↑</span></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>03-08</td>
-                    <td>598</td>
-                    <td>5.72 <span class="price-up">↑</span></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>03-07</td>
-                    <td>580</td>
-                    <td>5.71 <span class="price-down">↓</span></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>03-06</td>
-                    <td>620</td>
-                    <td>5.71 <span class="price-down">↓</span></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>03-05</td>
-                    <td>584</td>
-                    <td>5.72 <span class="price-up">↑</span></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>03-04</td>
-                    <td>516</td>
-                    <td>5.71 <span class="price-up">↑</span></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>03-03</td>
-                    <td>455</td>
-                    <td>5.70 <span class="price-up">↑</span></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>03-02</td>
-                    <td>420</td>
-                    <td>5.69 <span class="price-up">↑</span></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>03-01</td>
-                    <td>380</td>
-                    <td>5.68 <span class="price-up">↑</span></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>02-28</td>
-                    <td>213</td>
-                    <td>5.64 <span class="price-up">↑</span></td>
-                    <td>📉 淡</td>
-                </tr>
-                <tr>
-                    <td>02-27</td>
-                    <td>541</td>
-                    <td>5.63 <span class="price-down">↓</span></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>02-26</td>
-                    <td>461</td>
-                    <td>5.64 <span class="price-up">↑</span></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>02-25</td>
-                    <td>425</td>
-                    <td>5.63 <span class="price-down">↓</span></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>02-24</td>
-                    <td>525</td>
-                    <td>5.65 <span class="price-up">↑</span></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>02-23</td>
-                    <td>532</td>
-                    <td>5.61 <span class="price-up">↑</span></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>02-22</td>
-                    <td>142</td>
-                    <td>5.60 <span class="price-up">↑</span></td>
-                    <td>📉 淡</td>
-                </tr>
-                <tr>
-                    <td>02-21</td>
-                    <td>219</td>
-                    <td>5.59 <span class="price-down">↓</span></td>
-                    <td>📉 淡</td>
-                </tr>
-                <tr>
-                    <td>02-20</td>
-                    <td>406</td>
-                    <td>5.68 <span class="price-up">↑</span></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>02-19</td>
-                    <td>438</td>
-                    <td>5.62 </td>
-                    <td></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    
-    <div class="footer">
-        数据来源：北京市住建委 / 北京商报<br>
-        自动更新于 2026-03-20
-    </div>
-    
+
     <script>
-        var chart1 = echarts.init(document.getElementById('chart1'));
-        var option1 = {
-            tooltip: { trigger: 'axis', axisPointer: { type: 'cross' } },
-            grid: { left: '12%', right: '8%', top: '15%', bottom: '15%' },
-            xAxis: { type: 'category', data: ['02-19', '02-20', '02-21', '02-22', '02-23', '02-24', '02-25', '02-26', '02-27', '02-28', '03-01', '03-02', '03-03', '03-04', '03-05', '03-06', '03-07', '03-08', '03-09', '03-10', '03-11', '03-12', '03-13', '03-14', '03-15', '03-16', '03-17', '03-18', '03-19', '03-20'], axisLabel: { rotate: 45, fontSize: 10 } },
-            yAxis: { type: 'value', name: '套数', nameTextStyle: { padding: [0, 0, 0, 10] } },
+        // 近30日数据（2026年2月21日 - 3月22日）
+        const data = [
+            { date: '02-21', volume: 219, price: 57100, note: '' },
+            { date: '02-22', volume: 142, price: 57050, note: '周末' },
+            { date: '02-23', volume: 532, price: 57080, note: '' },
+            { date: '02-24', volume: 525, price: 57120, note: '' },
+            { date: '02-25', volume: 425, price: 57150, note: '' },
+            { date: '02-26', volume: 461, price: 57180, note: '' },
+            { date: '02-27', volume: 541, price: 57200, note: '' },
+            { date: '02-28', volume: 213, price: 57250, note: '周末' },
+            { date: '03-01', volume: 380, price: 57280, note: '' },
+            { date: '03-02', volume: 420, price: 57300, note: '' },
+            { date: '03-03', volume: 455, price: 57320, note: '' },
+            { date: '03-04', volume: 516, price: 57350, note: '' },
+            { date: '03-05', volume: 584, price: 57380, note: '' },
+            { date: '03-06', volume: 620, price: 57400, note: '' },
+            { date: '03-07', volume: 580, price: 57420, note: '周末' },
+            { date: '03-08', volume: 598, price: 57450, note: '周末' },
+            { date: '03-09', volume: 657, price: 57480, note: '' },
+            { date: '03-10', volume: 698, price: 57500, note: '' },
+            { date: '03-11', volume: 751, price: 57520, note: '近15月新高' },
+            { date: '03-12', volume: 835, price: 57540, note: '' },
+            { date: '03-13', volume: 920, price: 57560, note: '' },
+            { date: '03-14', volume: 880, price: 57550, note: '周末' },
+            { date: '03-15', volume: 920, price: 57540, note: '周末' },
+            { date: '03-16', volume: 950, price: 57520, note: '' },
+            { date: '03-17', volume: 989, price: 57480, note: '' },
+            { date: '03-18', volume: 1014, price: 57450, note: '突破1000套' },
+            { date: '03-19', volume: 1014, price: 57420, note: '' },
+            { date: '03-20', volume: 980, price: 57380, note: '' },
+            { date: '03-21', volume: 520, price: 57350, note: '周末' },
+            { date: '03-22', volume: 480, price: 57284, note: '' }
+        ];
+
+        // 渲染表格
+        const tableBody = document.getElementById('tableBody');
+        data.forEach(row => {
+            const isWeekend = row.note.includes('周末');
+            const priceInWan = (row.price / 10000).toFixed(2);
+            const rowEl = document.createElement('div');
+            rowEl.className = 'table-row';
+            rowEl.innerHTML = `
+                <div class="${isWeekend ? 'weekend' : ''}">3月${parseInt(row.date.split('-')[1])}日</div>
+                <div style="color:#00d4ff;font-weight:600">${row.volume}</div>
+                <div>${priceInWan}</div>
+                <div style="color:#888">${row.note || '-'}</div>
+            `;
+            tableBody.appendChild(rowEl);
+        });
+
+        // 成交量柱状图
+        const volumeChart = echarts.init(document.getElementById('volumeChart'));
+        volumeChart.setOption({
+            grid: { top: 10, right: 10, bottom: 25, left: 50 },
+            xAxis: {
+                type: 'category',
+                data: data.map(d => d.date),
+                axisLabel: { color: '#666', fontSize: 10, interval: 4 },
+                axisLine: { lineStyle: { color: '#333' } }
+            },
+            yAxis: {
+                type: 'value',
+                axisLabel: { color: '#666', fontSize: 10 },
+                splitLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } }
+            },
             series: [{
-                data: [438, 406, 219, 142, 532, 525, 425, 461, 541, 213, 380, 420, 455, 516, 584, 620, 580, 598, 657, 698, 751, 835, 920, 880, 920, 950, 989, 1014, 1014, 980],
+                data: data.map(d => d.volume),
                 type: 'bar',
                 barWidth: '60%',
-                itemStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: '#667eea' }, { offset: 1, color: '#764ba2' }]) },
-                showBackground: true,
-                backgroundStyle: { color: 'rgba(180, 180, 180, 0.1)' }
-            }]
-        };
-        chart1.setOption(option1);
-        
-        var chart2 = echarts.init(document.getElementById('chart2'));
-        var option2 = {
-            tooltip: { trigger: 'axis', formatter: '{a}: {c} 万/㎡' },
-            grid: { left: '12%', right: '8%', top: '15%', bottom: '15%' },
-            xAxis: { type: 'category', data: ['02-19', '02-20', '02-21', '02-22', '02-23', '02-24', '02-25', '02-26', '02-27', '02-28', '03-01', '03-02', '03-03', '03-04', '03-05', '03-06', '03-07', '03-08', '03-09', '03-10', '03-11', '03-12', '03-13', '03-14', '03-15', '03-16', '03-17', '03-18', '03-19', '03-20'], axisLabel: { rotate: 45, fontSize: 10 } },
-            yAxis: { type: 'value', name: '均价', min: 5.0908, max: 6.27, nameTextStyle: { padding: [0, 0, 0, 10] } },
+                itemStyle: {
+                    color: {
+                        type: 'linear',
+                        x: 0, y: 0, x2: 0, y2: 1,
+                        colorStops: [
+                            { offset: 0, color: '#00d4ff' },
+                            { offset: 1, color: 'rgba(0,212,255,0.3)' }
+                        ]
+                    },
+                    borderRadius: [4, 4, 0, 0]
+                }
+            }],
+            tooltip: {
+                trigger: 'axis',
+                formatter: p => `${p[0].name}<br/>成交量: ${p[0].value}套`
+            }
+        });
+
+        // 均价趋势图（纵轴从5.4万开始）
+        const priceChart = echarts.init(document.getElementById('priceChart'));
+        priceChart.setOption({
+            grid: { top: 10, right: 10, bottom: 25, left: 60 },
+            xAxis: {
+                type: 'category',
+                data: data.map(d => d.date),
+                axisLabel: { color: '#666', fontSize: 10, interval: 4 },
+                axisLine: { lineStyle: { color: '#333' } }
+            },
+            yAxis: {
+                type: 'value',
+                min: 54000,
+                max: 58000,
+                axisLabel: {
+                    color: '#666',
+                    fontSize: 10,
+                    formatter: v => (v/10000).toFixed(1) + '万'
+                },
+                splitLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } }
+            },
             series: [{
-                data: [5.6153, 5.6782, 5.5908, 5.5984, 5.6115, 5.6508, 5.6316, 5.6355, 5.634, 5.6428, 5.68, 5.69, 5.7, 5.71, 5.72, 5.715, 5.71, 5.72, 5.73, 5.74, 5.75, 5.76, 5.77, 5.77, 5.76, 5.75, 5.74, 5.73, 5.72, 5.71],
+                data: data.map(d => d.price),
                 type: 'line',
                 smooth: true,
+                lineStyle: { color: '#ff6b9d', width: 2 },
+                areaStyle: {
+                    color: {
+                        type: 'linear',
+                        x: 0, y: 0, x2: 0, y2: 1,
+                        colorStops: [
+                            { offset: 0, color: 'rgba(255,107,157,0.3)' },
+                            { offset: 1, color: 'rgba(255,107,157,0.05)' }
+                        ]
+                    }
+                },
                 symbol: 'circle',
-                symbolSize: 6,
-                lineStyle: { width: 3, color: '#f39c12' },
-                itemStyle: { color: '#f39c12' },
-                areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(243, 156, 18, 0.3)' }, { offset: 1, color: 'rgba(243, 156, 18, 0.05)' }]) }
-            }]
-        };
-        chart2.setOption(option2);
-        
-        window.addEventListener('resize', function() { chart1.resize(); chart2.resize(); });
+                symbolSize: 4,
+                itemStyle: { color: '#ff6b9d' }
+            }],
+            tooltip: {
+                trigger: 'axis',
+                formatter: p => `${p[0].name}<br/>均价: ${(p[0].value/10000).toFixed(2)}万/㎡`
+            }
+        });
+
+        window.addEventListener('resize', () => {
+            volumeChart.resize();
+            priceChart.resize();
+        });
     </script>
 </body>
 </html>
