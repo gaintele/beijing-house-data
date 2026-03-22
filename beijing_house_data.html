@@ -169,26 +169,26 @@
         <div class="section-title">核心指标</div>
         <div class="key-stats">
             <div class="key-stat-card">
-                <div class="key-stat-value">995</div>
+                <div class="key-stat-value">-</div>
                 <div class="key-stat-unit">套/日</div>
-                <div class="key-stat-label">近一周日均成交量</div>
+                <div class="key-stat-label">近30日日均成交量</div>
             </div>
             <div class="key-stat-card">
-                <div class="key-stat-value">5.73</div>
+                <div class="key-stat-value">-</div>
                 <div class="key-stat-unit">万/㎡</div>
-                <div class="key-stat-label">近一周成交均价</div>
+                <div class="key-stat-label">近30日成交均价</div>
             </div>
         </div>
 
-        <!-- 第二部分：近一年趋势（52周） -->
-        <div class="section-title">近一年趋势（52周）</div>
+        <!-- 第二部分：近30日趋势 -->
+        <div class="section-title">近30日趋势</div>
         <div class="charts-grid">
             <div class="chart-card">
-                <div class="chart-title">周均成交量趋势（柱状图）</div>
+                <div class="chart-title">每日成交量趋势（柱状图）</div>
                 <div class="chart-container" id="volumeChart"></div>
             </div>
             <div class="chart-card">
-                <div class="chart-title">周均成交均价趋势（折线图）</div>
+                <div class="chart-title">每日成交均价趋势（折线图）</div>
                 <div class="chart-container" id="priceChart"></div>
             </div>
         </div>
@@ -221,13 +221,50 @@
         <div class="source">
             <div class="source-title">数据来源说明</div>
             <p>数据来源：北京市住建委官网每日网签数据</p>
-            <p>注：网签数据有约20天延迟，本数据仅供参考</p>
+            <p>标注"真实数据"的日期为从官方/权威媒体核实的数据</p>
+            <p>标注"待补充"的日期为尚未获取到官方数据</p>
+            <p>注：网签数据有约20天延迟，年同比周数据为模拟数据</p>
         </div>
     </div>
 
     <script>
-        // 近一年周数据（52周，每周一个数据点：周均成交量和周均成交价）
-        // 2026年第1周 - 2026年第12周（当前）
+        // 近30日数据（2026年2月21日 - 3月22日）
+        // 数据来源：北京市住建委官网每日网签数据
+        // 标注"待补充"的日期为未搜索到官方数据
+        const data = [
+            { date: '02-21', volume: null, price: null, note: '待补充' },
+            { date: '02-22', volume: null, price: null, note: '待补充' },
+            { date: '02-23', volume: null, price: null, note: '待补充' },
+            { date: '02-24', volume: null, price: null, note: '待补充' },
+            { date: '02-25', volume: null, price: null, note: '待补充' },
+            { date: '02-26', volume: null, price: null, note: '待补充' },
+            { date: '02-27', volume: null, price: null, note: '待补充' },
+            { date: '02-28', volume: null, price: null, note: '待补充' },
+            { date: '03-01', volume: null, price: null, note: '待补充' },
+            { date: '03-02', volume: null, price: null, note: '待补充' },
+            { date: '03-03', volume: null, price: null, note: '待补充' },
+            { date: '03-04', volume: null, price: null, note: '待补充' },
+            { date: '03-05', volume: null, price: null, note: '待补充' },
+            { date: '03-06', volume: null, price: null, note: '待补充' },
+            { date: '03-07', volume: null, price: null, note: '待补充' },
+            { date: '03-08', volume: null, price: null, note: '待补充' },
+            { date: '03-09', volume: null, price: null, note: '待补充' },
+            { date: '03-10', volume: 657, price: null, note: '真实数据' },
+            { date: '03-11', volume: 751, price: null, note: '真实数据' },
+            { date: '03-12', volume: 920, price: null, note: '真实数据' },
+            { date: '03-13', volume: 242, price: null, note: '真实数据' },
+            { date: '03-14', volume: null, price: null, note: '待补充' },
+            { date: '03-15', volume: null, price: null, note: '待补充' },
+            { date: '03-16', volume: null, price: null, note: '待补充' },
+            { date: '03-17', volume: 904, price: null, note: '真实数据' },
+            { date: '03-18', volume: 989, price: null, note: '真实数据' },
+            { date: '03-19', volume: null, price: null, note: '待补充' },
+            { date: '03-20', volume: 997, price: null, note: '真实数据' },
+            { date: '03-21', volume: 310, price: null, note: '真实数据(周末)' },
+            { date: '03-22', volume: null, price: null, note: '待补充' }
+        ];
+
+        // 近一年周数据（52周）- 模拟数据，待替换为真实数据
         const data2026 = [
             { week: '25W01', volume: 380, price: 56800 },
             { week: '25W02', volume: 365, price: 56750 },
@@ -294,7 +331,7 @@
             { week: '26W12', volume: 995, price: 57284 }
         ];
 
-        // 2025年同期周数据（对应2026年同周期的数据）
+        // 2025年同期周数据
         const data2025 = [
             { week: '24W01', volume: 320, price: 54800 },
             { week: '24W02', volume: 310, price: 54750 },
@@ -361,32 +398,37 @@
             { week: '25W12', volume: 870, price: 55284 }
         ];
 
-        // 渲染表格（52周）
+        // 渲染表格（近30日）
         const tableBody = document.getElementById('tableBody');
-        data2026.forEach((row, i) => {
-            const priceInWan = (row.price / 10000).toFixed(2);
-            const prevYearPrice = data2025[i] ? data2025[i].price : 0;
-            const priceChange = prevYearPrice ? ((row.price - prevYearPrice) / prevYearPrice * 100).toFixed(1) : 0;
-            const priceChangeColor = priceChange > 0 ? '#ff6b9d' : '#4ade80';
+        data.forEach(row => {
+            const priceInWan = row.price ? (row.price / 10000).toFixed(2) : '-';
+            const volumeDisplay = row.volume !== null ? row.volume : '-';
             const rowEl = document.createElement('div');
             rowEl.className = 'table-row';
             rowEl.innerHTML = `
-                <div>${row.week}</div>
-                <div style="color:#00d4ff;font-weight:600">${row.volume}</div>
+                <div>3月${parseInt(row.date.split('-')[1])}日</div>
+                <div style="color:#00d4ff;font-weight:600">${volumeDisplay}</div>
                 <div>${priceInWan}</div>
-                <div style="color:${priceChangeColor}">${priceChange > 0 ? '+' : ''}${priceChange}%</div>
+                <div style="color:#888">${row.note}</div>
             `;
             tableBody.appendChild(rowEl);
         });
 
-        // 成交量柱状图（52周）
+        // 计算近30日有数据的天数平均值
+        const validData = data.filter(d => d.volume !== null);
+        const avgVolume = validData.length > 0 
+            ? Math.round(validData.reduce((sum, d) => sum + d.volume, 0) / validData.length) 
+            : '-';
+        document.querySelector('.key-stat-card:first-child .key-stat-value').textContent = avgVolume;
+
+        // 成交量柱状图（近30日）
         const volumeChart = echarts.init(document.getElementById('volumeChart'));
         volumeChart.setOption({
             grid: { top: 10, right: 10, bottom: 25, left: 50 },
             xAxis: {
                 type: 'category',
-                data: data2026.map(d => d.week),
-                axisLabel: { color: '#666', fontSize: 9, interval: 3 },
+                data: data.map(d => d.date),
+                axisLabel: { color: '#666', fontSize: 10, interval: 4 },
                 axisLine: { lineStyle: { color: '#333' } }
             },
             yAxis: {
@@ -395,41 +437,46 @@
                 splitLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } }
             },
             series: [{
-                data: data2026.map(d => d.volume),
+                data: data.map(d => d.volume),
                 type: 'bar',
                 barWidth: '60%',
                 itemStyle: {
-                    color: {
-                        type: 'linear',
-                        x: 0, y: 0, x2: 0, y2: 1,
-                        colorStops: [
-                            { offset: 0, color: '#00d4ff' },
-                            { offset: 1, color: 'rgba(0,212,255,0.3)' }
-                        ]
+                    color: (params) => {
+                        // 真实数据蓝色，待补充灰色
+                        return params.value !== null ? {
+                            type: 'linear',
+                            x: 0, y: 0, x2: 0, y2: 1,
+                            colorStops: [
+                                { offset: 0, color: '#00d4ff' },
+                                { offset: 1, color: 'rgba(0,212,255,0.3)' }
+                            ]
+                        } : '#444';
                     },
                     borderRadius: [4, 4, 0, 0]
                 }
             }],
             tooltip: {
                 trigger: 'axis',
-                formatter: p => `${p[0].name}<br/>周均成交量: ${p[0].value}套/日`
+                formatter: p => p[0].value !== null 
+                    ? `${p[0].name}<br/>成交量: ${p[0].value}套`
+                    : `${p[0].name}<br/>待补充数据`
             }
         });
 
-        // 均价趋势图（52周，纵轴从5.4万开始）
+        // 均价趋势图（近30日，待补充数据用虚线）
         const priceChart = echarts.init(document.getElementById('priceChart'));
         priceChart.setOption({
             grid: { top: 10, right: 10, bottom: 25, left: 60 },
             xAxis: {
                 type: 'category',
-                data: data2026.map(d => d.week),
-                axisLabel: { color: '#666', fontSize: 9, interval: 3 },
+                data: data.map(d => d.date),
+                axisLabel: { color: '#666', fontSize: 10, interval: 4 },
                 axisLine: { lineStyle: { color: '#333' } }
             },
             yAxis: {
                 type: 'value',
-                min: 54000,
-                max: 58000,
+                min: 50000,
+                max: 60000,
                 axisLabel: {
                     color: '#666',
                     fontSize: 10,
@@ -438,27 +485,19 @@
                 splitLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } }
             },
             series: [{
-                data: data2026.map(d => d.price),
+                data: data.map(d => d.price),
                 type: 'line',
                 smooth: true,
                 lineStyle: { color: '#ff6b9d', width: 2 },
-                areaStyle: {
-                    color: {
-                        type: 'linear',
-                        x: 0, y: 0, x2: 0, y2: 1,
-                        colorStops: [
-                            { offset: 0, color: 'rgba(255,107,157,0.3)' },
-                            { offset: 1, color: 'rgba(255,107,157,0.05)' }
-                        ]
-                    }
-                },
+                itemStyle: { color: '#ff6b9d' },
                 symbol: 'circle',
-                symbolSize: 4,
-                itemStyle: { color: '#ff6b9d' }
+                symbolSize: 4
             }],
             tooltip: {
                 trigger: 'axis',
-                formatter: p => `${p[0].name}<br/>周均均价: ${(p[0].value/10000).toFixed(2)}万/㎡`
+                formatter: p => p[0].value !== null 
+                    ? `${p[0].name}<br/>均价: ${(p[0].value/10000).toFixed(2)}万/㎡`
+                    : `${p[0].name}<br/>待补充数据`
             }
         });
 
