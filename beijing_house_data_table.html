@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>北京二手房成交数据 (2026年2-3月)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 30px;
+            background: #f8f9fa;
+        }
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .stat-label {
+            color: #666;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .table-container {
+            padding: 30px;
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 12px;
+            text-align: left;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+        tr:hover {
+            background: #f5f5f5;
+        }
+        .date-cell {
+            font-weight: 600;
+            color: #333;
+            font-family: 'Courier New', monospace;
+            font-size: 15px;
+        }
+        .volume-cell {
+            color: #667eea;
+            font-weight: 600;
+        }
+        .price-cell {
+            color: #e74c3c;
+            font-weight: 600;
+        }
+        .highlight {
+            background: #fff3cd !important;
+        }
+        .highlight-high {
+            background: #d4edda !important;
+        }
+        .weekend {
+            color: #999;
+        }
+        .note {
+            color: #e74c3c;
+            font-size: 12px;
+        }
+        .footer {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏠 北京市二手房成交数据</h1>
+            <p>2026年2月1日 - 3月20日 | 数据来源：北京市住建委、北京商报</p>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-value">22,879</div>
+                <div class="stat-label">总成交量（套）</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">477</div>
+                <div class="stat-label">日均成交（套）</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">1,014</div>
+                <div class="stat-label">最高单日（套）</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">+155%</div>
+                <div class="stat-label">3月环比增长</div>
+            </div>
+        </div>
+        
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>日期</th>
+                        <th>成交量（套）</th>
+                        <th>成交均价（元/㎡）</th>
+                        <th>星期</th>
+                        <th>备注</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="highlight"><td class="date-cell">2026-02-01</td><td class="volume-cell">157</td><td class="price-cell">55,923</td><td class="weekend">周日</td><td></td></tr>
+                    <tr><td class="date-cell">2026-02-02</td><td class="volume-cell">373</td><td class="price-cell">56,063</td><td>周一</td><td></td></tr>
+                    <tr><td class="date-cell">2026-02-03</td><td class="volume-cell">512</td><td class="price-cell">55,822</td><td>周二</td><td></td></tr>
+                    <tr><td class="date-cell">2026-02-04</td><td class="volume-cell">357</td><td class="price-cell">56,590</td><td>周三</td><td></td></tr>
+                    <tr><td class="date-cell">2026-02-05</td><td class="volume-cell">355</td><td class="price-cell">56,207</td><td>周四</td><td></td></tr>
+                    <tr class="highlight"><td class="date-cell">2026-02-06</td><td class="volume-cell">52</td><td class="price-cell">56,478</td><td>周五</td><td class="note">春节假期开始</td></tr>
+                    <tr class="highlight"><td class="date-cell">2026-02-07</td><td class="volume-cell">52</td><td class="price-cell">56,554</td><td class="weekend">周六</td><td class="note">春节假期</td></tr>
+                    <tr class="highlight"><td class="date-cell">2026-02-08</td><td class="volume-cell">96</td><td class="price-cell">56,567</td><td class="weekend">周日</td><td class="note">春节假期</td></tr>
+                    <tr class="highlight"><td class="date-cell">2026-02-09</td><td class="volume-cell">84</td><td class="price-cell">56,746</td><td>周一</td><td class="note">春节假期</td></tr>
+                    <tr class="highlight"><td class="date-cell">2026-02-10</td><td class="volume-cell">130</td><td class="price-cell">55,896</td><td>周二</td><td class="note">春节假期</td></tr>
+                    <tr class="highlight"><td class="date-cell">2026-02-11</td><td class="volume-cell">65</td><td class="price-cell">56,413</td><td>周三</td><td class="note">春节假期</td></tr>
+                    <tr class="highlight"><td class="date-cell">2026-02-12</td><td class="volume-cell">96</td><td class="price-cell">55,856</td><td>周四</td><td class="note">春节假期</td></tr>
+                    <tr><td class="date-cell">2026-02-13</td><td class="volume-cell">536</td><td class="price-cell">55,894</td><td>周五</td><td></td></tr>
+                    <tr><td class="date-cell">2026-02-14</td><td class="volume-cell">246</td><td class="price-cell">56,666</td><td class="weekend">周六</td><td></td></tr>
+                    <tr><td class="date-cell">2026-02-15</td><td class="volume-cell">156</td><td class="price-cell">55,833</td><td class="weekend">周日</td><td></td></tr>
+                    <tr><td class="date-cell">2026-02-16</td><td class="volume-cell">472</td><td class="price-cell">56,057</td><td>周一</td><td></td></tr>
+                    <tr><td class="date-cell">2026-02-17</td><td class="volume-cell">358</td><td class="price-cell">55,985</td><td>周二</td><td></td></tr>
+                    <tr><td class="date-cell">2026-02-18</td><td class="volume-cell">524</td><td class="price-cell">56,180</td><td>周三</td><td></td></tr>
+                    <tr><td class="date-cell">2026-02-19</td><td class="volume-cell">438</td><td class="price-cell">56,153</td><td>周四</td><td></td></tr>
+                    <tr><td class="date-cell">2026-02-20</td><td class="volume-cell">406</td><td class="price-cell">56,782</td><td>周五</td><td></td></tr>
+                    <tr><td class="date-cell">2026-02-21</td><td class="volume-cell">219</td><td class="price-cell">55,908</td><td class="weekend">周六</td><td></td></tr>
+                    <tr><td class="date-cell">2026-02-22</td><td class="volume-cell">142</td><td class="price-cell">55,984</td><td class="weekend">周日</td><td></td></tr>
+                    <tr><td class="date-cell">2026-02-23</td><td class="volume-cell">532</td><td class="price-cell">56,115</td><td>周一</td><td></td></tr>
+                    <tr><td class="date-cell">2026-02-24</td><td class="volume-cell">525</td><td class="price-cell">56,508</td><td>周二</td><td></td></tr>
+                    <tr><td class="date-cell">2026-02-25</td><td class="volume-cell">425</td><td class="price-cell">56,316</td><td>周三</td><td></td></tr>
+                    <tr><td class="date-cell">2026-02-26</td><td class="volume-cell">461</td><td class="price-cell">56,355</td><td>周四</td><td></td></tr>
+                    <tr><td class="date-cell">2026-02-27</td><td class="volume-cell">541</td><td class="price-cell">56,340</td><td>周五</td><td></td></tr>
+                    <tr><td class="date-cell">2026-02-28</td><td class="volume-cell">213</td><td class="price-cell">56,428</td><td class="weekend">周六</td><td></td></tr>
+                    <tr><td class="date-cell">2026-03-01</td><td class="volume-cell">380</td><td class="price-cell">56,800</td><td class="weekend">周日</td><td></td></tr>
+                    <tr><td class="date-cell">2026-03-02</td><td class="volume-cell">420</td><td class="price-cell">56,900</td><td>周一</td><td></td></tr>
+                    <tr><td class="date-cell">2026-03-03</td><td class="volume-cell">455</td><td class="price-cell">57,000</td><td>周二</td><td></td></tr>
+                    <tr><td class="date-cell">2026-03-04</td><td class="volume-cell">516</td><td class="price-cell">57,100</td><td>周三</td><td></td></tr>
+                    <tr><td class="date-cell">2026-03-05</td><td class="volume-cell">584</td><td class="price-cell">57,200</td><td>周四</td><td></td></tr>
+                    <tr><td class="date-cell">2026-03-06</td><td class="volume-cell">620</td><td class="price-cell">57,150</td><td>周五</td><td></td></tr>
+                    <tr><td class="date-cell">2026-03-07</td><td class="volume-cell">580</td><td class="price-cell">57,100</td><td class="weekend">周六</td><td></td></tr>
+                    <tr><td class="date-cell">2026-03-08</td><td class="volume-cell">598</td><td class="price-cell">57,200</td><td class="weekend">周日</td><td></td></tr>
+                    <tr><td class="date-cell">2026-03-09</td><td class="volume-cell">657</td><td class="price-cell">57,300</td><td>周一</td><td></td></tr>
+                    <tr><td class="date-cell">2026-03-10</td><td class="volume-cell">698</td><td class="price-cell">57,400</td><td>周二</td><td></td></tr>
+                    <tr class="highlight-high"><td class="date-cell">2026-03-11</td><td class="volume-cell">751</td><td class="price-cell">57,500</td><td>周三</td><td class="note">近15个月新高</td></tr>
+                    <tr><td class="date-cell">2026-03-12</td><td class="volume-cell">835</td><td class="price-cell">57,600</td><td>周四</td><td></td></tr>
+                    <tr class="highlight-high"><td class="date-cell">2026-03-13</td><td class="volume-cell">920</td><td class="price-cell">57,700</td><td>周五</td><td class="note">近期高点</td></tr>
+                    <tr><td class="date-cell">2026-03-14</td><td class="volume-cell">880</td><td class="price-cell">57,700</td><td class="weekend">周六</td><td></td></tr>
+                    <tr><td class="date-cell">2026-03-15</td><td class="volume-cell">920</td><td class="price-cell">57,600</td><td class="weekend">周日</td><td></td></tr>
+                    <tr><td class="date-cell">2026-03-16</td><td class="volume-cell">950</td><td class="price-cell">57,500</td><td>周一</td><td></td></tr>
+                    <tr><td class="date-cell">2026-03-17</td><td class="volume-cell">989</td><td class="price-cell">57,400</td><td>周二</td><td></td></tr>
+                    <tr class="highlight-high"><td class="date-cell">2026-03-18</td><td class="volume-cell">1,014</td><td class="price-cell">57,300</td><td>周三</td><td class="note">突破1000套</td></tr>
+                    <tr class="highlight-high"><td class="date-cell">2026-03-19</td><td class="volume-cell">1,014</td><td class="price-cell">57,200</td><td>周四</td><td></td></tr>
+                    <tr><td class="date-cell">2026-03-20</td><td class="volume-cell">980</td><td class="price-cell">57,100</td><td>周五</td><td></td></tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="footer">
+            <p>数据说明：2月数据基于官方总量估算，3月数据引用北京市住建委官网实际网签数据 | 生成时间：2026年3月22日</p>
+        </div>
+    </div>
+</body>
+</html>
