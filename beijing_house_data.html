@@ -47,34 +47,35 @@
         }
         .key-stats {
             display: flex;
-            gap: 16px;
+            gap: 12px;
             margin-bottom: 24px;
         }
         .key-stat-card {
             flex: 1;
+            max-width: calc(50% - 6px);
             background: rgba(255,255,255,0.08);
-            border-radius: 16px;
-            padding: 20px 16px;
+            border-radius: 12px;
+            padding: 16px 8px;
             text-align: center;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.15);
         }
         .key-stat-value {
-            font-size: 36px;
+            font-size: 32px;
             font-weight: bold;
             background: linear-gradient(90deg, #00d4ff, #7b2cbf);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         .key-stat-unit {
-            font-size: 14px;
+            font-size: 13px;
             color: #888;
-            margin-top: 4px;
+            margin-top: 2px;
         }
         .key-stat-label {
-            font-size: 13px;
+            font-size: 12px;
             color: #666;
-            margin-top: 8px;
+            margin-top: 6px;
         }
 
         /* 第二部分：趋势图上下排列 */
@@ -141,9 +142,13 @@
 
         /* 手机适配：保持并排显示 */
         @media (max-width: 500px) {
-            .key-stat-card { padding: 16px 12px; }
-            .key-stat-value { font-size: 28px; }
-            .key-stat-label { font-size: 12px; }
+            .key-stat-card { 
+                max-width: calc(50% - 6px);
+                padding: 12px 6px;
+            }
+            .key-stat-value { font-size: 24px; }
+            .key-stat-unit { font-size: 12px; }
+            .key-stat-label { font-size: 11px; }
             .table-header, .table-row {
                 grid-template-columns: 1fr 1fr 1fr;
             }
